@@ -69,10 +69,6 @@ html,body{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-.navbar-right {
-    float: right!important;
-    margin-right: -15px;
-}
 .container-fluid>.navbar-collapse, .container-fluid>.navbar-header, .container>.navbar-collapse, .container>.navbar-header {
     margin-right: 0;
     margin-left: 0;
@@ -90,7 +86,8 @@ html,body{
 	font-weight: bold;
 	color: white;
 	width:100%;
-	position: absolute;
+	font-size: 48px;
+	padding-top: 60px;
 	text-align: center;
 }
 
@@ -98,17 +95,10 @@ html,body{
 	font-weight: bold;
 	color: orange;
 	width:100%;
-	position: absolute;
+	font-size: 24px;
 	text-align: center;
 }
 
-#info{
-	font-weight: bold;
-	color: white;
-	width:100%;
-	position: absolute;
-	text-align: center;
-}
 .form-control{
 	background:#444;
 	color:rgba(255, 255, 255, 0.3);

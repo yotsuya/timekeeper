@@ -24,10 +24,9 @@ THE SOFTWARE.
 
 $(function(){
 	var loadedcss = '';
-	$('#time1').val('15:00');
-	$('#time2').val('20:00');
-	$('#time3').val('25:00');
-	$('#info').html("Click to edit this message.");
+	$('#time1').val('3:00');
+	$('#time2').val('5:00');
+	$('#time3').val('8:00');
 	function getHashParams() {
     var hashParams = {};
     var e,
@@ -48,7 +47,6 @@ $(function(){
     if(params.t1 !== undefined) $('#time1').val(params.t1);
 		if(params.t2 !== undefined) $('#time2').val(params.t2);
 		if(params.t3 !== undefined) $('#time3').val(params.t3);
-		if(params.m !== undefined) $('#info').html(params.m);
 		if(loadedcss !== ''){
 			location.reload();
 		}
@@ -63,8 +61,7 @@ $(function(){
 	function updateHash() {
     var hashstr = '#t1=' + $('#time1').val()
 		+ '&t2=' + $('#time2').val()
-		+ '&t3=' + $('#time3').val()
-		+ '&m=' + encodeURIComponent($('#info').html());
+		+ '&t3=' + $('#time3').val();
 		if(loadedcss !== 'default'){
 			hashstr = hashstr + '&th=' + encodeURIComponent(loadedcss);
 		}
@@ -83,22 +80,9 @@ $(function(){
 	parseHashParams();
 	updateHash();
 
-	$('#time1,#time2,#time3,#info').change(function(){
+	$('#time1,#time2,#time3').change(function(){
 		updateHash();
 	});
-
-	var infoline = $('#info').html();
-	$('#info').blur(function() {
-	    if (infoline!=$(this).html()){
-	        infoline = $(this).html();
-					updateHash();
-	    }
-	});
-
-	var audio_chime1,audio_chime2,audio_chime3;
-	audio_chime1 = new Audio("./wav/chime1.wav");
-	audio_chime2 = new Audio("./wav/chime2.wav");
-	audio_chime3 = new Audio("./wav/chime3.wav");
 
 	function changeStateClass(s) {
 		$('body').removeClass(function(index, className) {
@@ -123,6 +107,7 @@ $(function(){
 		changePhaseClass('0');
 		time_inner=(new Date('2011/1/1 00:00:00'));
 		show_time();
+		$('#time').css('color', 'white');
 	});
 	changeStateClass('standby');
 	changePhaseClass('0');
@@ -139,9 +124,6 @@ $(function(){
 		changeStateClass('start');
 		start_time = new Date((new Date()).getTime() - (time_inner-(new Date('2011/1/1 00:00:00'))));
 		last_time = null;
-		audio_chime1.load();
-		audio_chime2.load();
-		audio_chime3.load();
 	});
 
 	$('.nav #pause').click(function (event){
@@ -161,31 +143,6 @@ $(function(){
 		changeStateClass('paused');
 	});
 
-	function resize_display() {
-		var height=$('body').height();
-		var width=$('body').width();
-		var theight=Math.min(height*3/5,width*1.95/5);
-		$('#time').css('top',(height-theight)/2*1.1);
-		$('#time').css('font-size',theight+'px');
-		$('#time').css('line-height',theight+'px');
-		var sheight=theight/6;
-		$('#state').css('top',height/2-theight/2-sheight/2);
-		$('#state').css('font-size',sheight+'px');
-		$('#state').css('line-height',sheight+'px');
-		var iheight=sheight;
-		$('#info').css('top',height/2+theight/2);
-		$('#info').css('font-size',iheight+'px');
-		$('#info').css('line-height',iheight+'px');
-	}
-	$(window).bind("resize", resize_display);
-
-	$('#soundcheck').click(function (event){
-		event.preventDefault();
-		audio_chime1.load();
-		audio_chime1.currentTime = 0;
-		audio_chime1.play();
-	});
-
 	function show_time(){
 		var time_str= ('00' +  time_inner.getMinutes()   ).slice(-2) + ':'
 					+ ('00' +  time_inner.getSeconds() ).slice(-2);
@@ -201,7 +158,6 @@ $(function(){
 	}
   $('[data-toggle="tooltip"]').tooltip();
 	$.timer(100,function(timer){
-			resize_display();
 			if($('.nav li#start').hasClass('active')){
 				update_time();
 
@@ -213,20 +169,17 @@ $(function(){
 
 					if((last_time < time1 && time1 <= cur_time) || (last_time==time1 && cur_time==time1)){
 						changePhaseClass('1');
-						audio_chime1.currentTime = 0;
-						audio_chime1.play();
+						$('#time').css('color', 'green');
 					}
 
 					if((last_time < time2 && time2 <= cur_time) || (last_time==time2 && cur_time==time2)){
 						changePhaseClass('2');
-						audio_chime2.currentTime = 0;
-						audio_chime2.play();
+						$('#time').css('color', 'yellow');
 					}
 
 					if((last_time < time3 && time3 <= cur_time) || (last_time==time3 && cur_time==time3)){
 						changePhaseClass('3');
-						audio_chime3.currentTime = 0;
-						audio_chime3.play();
+						$('#time').css('color', 'red');
 					}
 
 				}
